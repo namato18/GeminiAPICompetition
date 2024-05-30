@@ -1,20 +1,33 @@
 
 
 library(shiny)
+library(shinybusy)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-  actionButton(inputId = "button1", label = "press me"),
-  checkboxInput("checkbox", label = "Choice A", value = TRUE),
-  checkboxGroupInput("checkGroup", label = h3("Checkbox group"), 
-                     choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3),
-                     selected = 1),
-  dateInput("date", label = h3("Date input"), value = "2014-01-01"),
+  
+  fileInput(inputId = "imageinput", label = "Drop image here"),
+  textInput(inputId = "Prompt", label = "Description here/question"),
+  actionButton(inputId = "submit", "talk to Gemini"),
+  textOutput(outputId = "Answer")
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-
+  
+  shinybusy::add_busy_spinner(spin = "semipolar", color = "black", position = "bottom-right")
+  source("../GeminiFuncs.R")
+  
+  
+  observeEvent(input$submit,{
+    
+    SavedAnswer = gemini(input$Prompt)
+    
+    print(input$Prompt)
+    print(SavedAnswer)
+    
+    output$Answer = renderText(SavedAnswer)
+  })
 }
 
 # Run the application 
