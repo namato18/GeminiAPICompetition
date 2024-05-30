@@ -1,9 +1,8 @@
-library(gemini.R)
 library(httr)
 library(jsonlite)
 
-setAPI("AIzaSyCQM7Zx6awa2nZ4-MaoUxpPjc4lEVTHIAM")
 
+api_key <- Sys.setenv(GEMINI_API_KEY = "AIzaSyCFCKa8CM0c_khCk8qBtGZWInPO2pFvKak")
 gemini <- function(prompt, 
                    temperature=0.5,
                    max_output_tokens=1024,
