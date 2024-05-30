@@ -3,6 +3,7 @@ library(shinybusy)
 
 options(shiny.maxRequestSize = 50 * 1024^2)
 
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
@@ -13,7 +14,6 @@ ui <- fluidPage(
   imageOutput(outputId = "imgOut")
 )
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
   
   shinybusy::add_busy_spinner(spin = "semipolar", color = "black", position = "bottom-right")
@@ -41,5 +41,4 @@ server <- function(input, output) {
   })
 }
 
-# Run the application 
 shinyApp(ui = ui, server = server)
