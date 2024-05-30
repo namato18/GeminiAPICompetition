@@ -6,10 +6,11 @@ library(shinybusy)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
-  fileInput(inputId = "imageinput", label = "Drop image here"),
-  textInput(inputId = "Prompt", label = "Description here/question"),
+  fileInput(inputId = "imageInput", label = "Drop image here"),
+  textInput(inputId = "prompt", label = "Description here/question"),
   actionButton(inputId = "submit", "talk to Gemini"),
-  textOutput(outputId = "Answer")
+  textOutput(outputId = "answer"),
+  imageOutput(outputId = "imgOut")
 )
 
 # Define server logic required to draw a histogram
@@ -19,14 +20,24 @@ server <- function(input, output) {
   source("../GeminiFuncs.R")
   
   
+  observeEvent(input$imageInput, {
+    path = input$imageInput$datapath
+    
+    output$imgOut = renderImage({
+      list(
+        src = path
+      )
+    }, deleteFile = FALSE)
+  })
+  
   observeEvent(input$submit,{
     
-    SavedAnswer = gemini(input$Prompt)
+    SavedAnswer = gemini_vision(input$prompt, input$imageInput$datapath)
     
-    print(input$Prompt)
+    print(input$prompt)
     print(SavedAnswer)
     
-    output$Answer = renderText(SavedAnswer)
+    output$answer = renderText(SavedAnswer)
   })
 }
 
