@@ -1,7 +1,7 @@
-
-
 library(shiny)
 library(shinybusy)
+
+options(shiny.maxRequestSize = 50 * 1024^2)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
