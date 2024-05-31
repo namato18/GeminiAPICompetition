@@ -1,11 +1,17 @@
 library(shiny)
 library(shinybusy)
+library(shiny.pwa)
 
 options(shiny.maxRequestSize = 50 * 1024^2)
 
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  # Your app content
+  pwa(
+      "https://shiny.nick-amato.com/GeminiTesting",
+      output = 'www',
+  ),
   
   fileInput(inputId = "imageInput", label = "Drop image here"),
   textInput(inputId = "prompt", label = "Description here/question"),
@@ -17,7 +23,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   shinybusy::add_busy_spinner(spin = "semipolar", color = "black", position = "bottom-right")
-  source("../GeminiFuncs.R")
+  source("GeminiFuncs.R")
   
   
   observeEvent(input$imageInput, {
