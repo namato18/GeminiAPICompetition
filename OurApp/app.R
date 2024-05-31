@@ -69,7 +69,7 @@ ui <- fluidPage(
     textInput(inputId = "prompt", label = "Description here/question"),
     actionButton(inputId = "submit", "talk to Gemini"),
     textOutput(outputId = "answer"),
-    imageOutput(outputId = "imgOut"),
+    imageOutput(outputId = "imgOut", width = "400px", height = "400px"),
     align = 'center'
   )
 
@@ -85,7 +85,9 @@ server <- function(input, output) {
     
     output$imgOut = renderImage({
       list(
-        src = path
+        src = path,
+        width = "400px",
+        height = "400px"
       )
     }, deleteFile = FALSE)
   })
