@@ -9,7 +9,9 @@ options(shiny.maxRequestSize = 50 * 1024^2)
 ui <- fluidPage(
   # Your app content
   pwa(
-      "https://shiny.nick-amato.com/GeminiTesting",
+      domain = "https://shiny.nick-amato.com/GeminiTesting",
+      title = "DupeScoop",
+      icon = "www/DUPE SCOOP.png",
       output = 'www',
   ),
   
