@@ -20,10 +20,7 @@ card <- function(title, ...) {
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-  theme = bslib::bs_theme(preset = 'darkly',
-                          bg = 'black',
-                          fg = 'white',
-                          base_font = 'blue'),
+  theme = bslib::bs_theme(preset = 'quartz'),
   
   # Make app into a downloadable format for mobile/web
   pwa(
@@ -63,7 +60,7 @@ ui <- fluidPage(
   ),
   # ---- rest of code ----
 
-  setBackgroundImage('waterfall.jpeg'),
+  setBackgroundImage('darker.jpg'),
 
   div(
     textInput(inputId = "prompt", label = "Description here/question"),
