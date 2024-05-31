@@ -11,7 +11,7 @@ ui <- fluidPage(
   pwa(
       domain = "https://shiny.nick-amato.com/GeminiTesting",
       title = "DupeScoop",
-      icon = "www/DUPE SCOOP.png",
+      icon = "www/dupescoop.png",
       output = 'www',
   ),
   
