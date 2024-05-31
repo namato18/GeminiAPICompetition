@@ -14,4 +14,3 @@
 * Display these listings in an easily navigatable manner for the user
 * Links should be provided to bring the user directly to the Amazon listing
 * Purchases that users make using our links should provide us some return from the Amazon affiliate program
-[I'm an inline-style link](https://www.google.com)
