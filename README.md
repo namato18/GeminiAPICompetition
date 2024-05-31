@@ -1,1 +1,2 @@
 # Dupe Scoop
+#### General Overview
