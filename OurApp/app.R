@@ -34,10 +34,10 @@ ui <- fluidPage(
   ),
   
   # Read in our custom CSS
-  tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
-  ),
-  
+  # tags$head(
+  #   tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
+  # ),
+  # 
   # ---- Fancy image input ---- 
 
   shiny::fluidRow(
