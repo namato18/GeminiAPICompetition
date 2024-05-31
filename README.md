@@ -1,5 +1,5 @@
 # Dupe Scoop
-![alt text](https://github.com/namato18/GeminiAPICompetition/raw/main/src/dupescoop.png "Logo Title Text 1")
+<img src="https://github.com/namato18/GeminiAPICompetition/raw/main/src/dupescoop.png" width="250" height = "250">
 
 #### General Overview
 * Web App/PWA for mobile and desktop
