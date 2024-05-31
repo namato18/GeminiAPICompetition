@@ -2,6 +2,7 @@ library(shiny)
 library(shinybusy)
 library(shiny.pwa)
 library(shinyWidgets)
+library(bslib)
 
 source("GeminiFuncs.R")
 source('icon.R')
@@ -19,6 +20,10 @@ card <- function(title, ...) {
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  theme = bslib::bs_theme(preset = 'darkly',
+                          bg = 'black',
+                          fg = 'white',
+                          base_font = 'blue'),
   
   # Make app into a downloadable format for mobile/web
   pwa(
@@ -34,15 +39,13 @@ ui <- fluidPage(
   ),
   
   # ---- Fancy image input ---- 
-  title = "Image Input",
-  theme = bslib::bs_theme(version = 5),
-  lang = "en",
+
   shiny::fluidRow(
     style = "margin-top: 20px;",
     shiny::column(
       width = 10, offset = 1,
       card(
-        title = "Select an image of a product!",
+        title = div("Select an image of a product!", align = 'center'),
         shiny::fluidRow(
           column(
             width = 4, offset = 4,
@@ -50,8 +53,7 @@ ui <- fluidPage(
               "imageInput",
               label = "Tap to upload!",
               buttonLabel = "Upload a clear picture!",
-              multiple = TRUE,
-              accept = "text/plain"
+              multiple = FALSE
             ),
             shiny::tableOutput("files")
           )
@@ -61,12 +63,16 @@ ui <- fluidPage(
   ),
   # ---- rest of code ----
 
-  setBackgroundImage('background.jpg'),
+  setBackgroundImage('waterfall.jpeg'),
 
-  textInput(inputId = "prompt", label = "Description here/question"),
-  actionButton(inputId = "submit", "talk to Gemini"),
-  textOutput(outputId = "answer"),
-  imageOutput(outputId = "imgOut")
+  div(
+    textInput(inputId = "prompt", label = "Description here/question"),
+    actionButton(inputId = "submit", "talk to Gemini"),
+    textOutput(outputId = "answer"),
+    imageOutput(outputId = "imgOut"),
+    align = 'center'
+  )
+
 )
 
 server <- function(input, output) {
