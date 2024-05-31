@@ -1,5 +1,5 @@
 # Dupe Scoop
-[logo]: https://github.com/namato18/GeminiAPICompetition/tree/main/man/DUPE-SCOOP.png
+[logo]: https://github.com/namato18/GeminiAPICompetition/blob/main/man/DUPE%20SCOOP.png
 #### General Overview
 * Web App/PWA for mobile and desktop
 * Purpose is to provide user with cheaper alternatives to brand name products
