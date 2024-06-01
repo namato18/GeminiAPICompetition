@@ -3,6 +3,7 @@ library(shinybusy)
 library(shiny.pwa)
 library(shinyWidgets)
 library(bslib)
+library(stringr)
 
 source("GeminiFuncs.R")
 source('icon.R')
@@ -30,11 +31,8 @@ ui <- fluidPage(
       output = 'www',
   ),
   
-  # Read in our custom CSS
-  # tags$head(
-  #   tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
-  # ),
-  # 
+  div(h1("Dupe Scoop", class = 'main-title'), align = 'center'),
+  
   # ---- Fancy image input ---- 
 
   shiny::fluidRow(
@@ -64,7 +62,7 @@ ui <- fluidPage(
 
   div(
     textInput(inputId = "prompt", label = "Description here/question"),
-    actionButton(inputId = "submit", "talk to Gemini"),
+    actionButton(inputId = "submit", "Find Better Deals!"),
     textOutput(outputId = "answer"),
     imageOutput(outputId = "imgOut", width = "400px", height = "400px"),
     align = 'center'
@@ -91,12 +89,22 @@ server <- function(input, output) {
   
   observeEvent(input$submit,{
     
-    SavedAnswer = gemini_vision(input$prompt, input$imageInput$datapath)
+    main_prompt = paste0("Based on the picture provided, can you please find similar products that contain the same or similar ingredients.",
+                         ' The items should also be found for a cheaper price. The products should also have the same function as the original product. ',
+                         "Please only return a bulleted list of the names of the similar products.",
+                         " I do not want any additional information in your response, just the names of the similar/cheaper products.",
+                         " Please return each similar product with the form **(product)**")
+    
+    SavedAnswer = gemini_vision(main_prompt, input$imageInput$datapath)
+    
+
+    
+    products = str_match_all(SavedAnswer, pattern = "\\*\\*(.*)\\*\\*")[[1]][,2]
     
     print(input$prompt)
     print(SavedAnswer)
     
-    output$answer = renderText(SavedAnswer)
+    output$answer = renderText(products)
   })
 }
 
