@@ -62,6 +62,7 @@ ui <- fluidPage(
 
   div(
     textInput(inputId = "prompt", label = "Description here/question"),
+    selectInput(inputId = "Dropdown", "Select an option", label = "Options", choices = c("Cheaper Product", "Better Quality", "Woman-Owned", "Organic")),
     actionButton(inputId = "submit", "Find Better Deals!"),
     textOutput(outputId = "answer"),
     imageOutput(outputId = "imgOut", width = "400px", height = "400px"),
@@ -74,6 +75,10 @@ server <- function(input, output) {
   
   shinybusy::add_busy_spinner(spin = "semipolar", color = "black", position = "bottom-right")
   
+  observeEvent(input$Dropdown,{
+ 
+    print(input$Dropdown)
+  })
   
   observeEvent(input$imageInput, {
     path = input$imageInput$datapath
