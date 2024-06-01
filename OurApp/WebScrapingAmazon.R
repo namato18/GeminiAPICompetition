@@ -1,13 +1,8 @@
 library(rvest)
 library(dplyr)
-main_prompt = paste0("Based on the picture provided, can you please find similar products that contain the same or similar ingredients.",
-                     ' The items should also be found for a cheaper price. The products should also have the same function as the original product. ',
-                     "Please only return a bulleted list of the names of the similar products.",
-                     " I do not want any additional information in your response, just the names of the similar/cheaper products.",
-                     " Please return each similar product with the form **(product)**")
-SavedAnswer = gemini_vision(main_prompt, "C:/Users/xbox/Pictures/Capture.JPG")
-SavedAnswer
+library(stringr)
 
+source('OurApp/GeminiFuncs.R')
 
 # URL of the Amazon search results page
 url <- "https://www.amazon.com/s?k=Eucerin+Original+Healing+Cream"
@@ -16,25 +11,13 @@ url <- "https://www.amazon.com/s?k=Eucerin+Original+Healing+Cream"
 webpage <- read_html(url)
 
 image_urls <- webpage %>%
-  html_nodes(".s-image-optimized-rendering") %>%
+  html_nodes("img.s-image.s-image-optimized-rendering") %>%
   html_attr("src")
 
 product_links = webpage %>%
   html_nodes('.a-link-normal.s-no-outline') %>%
   html_attr('href')
 
-# Construct the full tracking URL by adding the base URL
-base_url <- "https://www.amazon.com"
-full_tracking_url <- paste0(base_url, product_link)
-
-# Follow the redirection to get the final URL
-response <- GET(full_tracking_url)
-
-# Extract the final URL
-final_url <- response$url
-
-# Print the final URL
-print(final_url)
 
 # ---- pick out listings class ----
 x = webpage %>% html_nodes('.a-declarative') %>% html_text()
@@ -42,14 +25,17 @@ x = webpage %>% html_nodes('.a-declarative') %>% html_text()
 # ---- grab listings ----
 testing <- sapply(x, function(y) {
   contains_dollar <- grepl(pattern = '\\$', y)
-  does_not_contain_sponsored <- !grepl(pattern = 'Sponsored', y)
-  does_not_contain_OverallPick <- !grepl(pattern = 'Overall Pick', y)
-  return(contains_dollar & does_not_contain_sponsored & does_not_contain_OverallPick)
+  return(contains_dollar)
 })
 
-listings = x[testing][1:5]
-product_links = product_links[testing][1:5]
-image_urls = image_urls[testing][1:5]
+
+listings = x[testing]
+
+sponsored_overallpick_remove_ind = grep(pattern = 'Sponsored|Overall Pick', listings)
+
+listings = listings[-sponsored_overallpick_remove_ind][1:10]
+product_links = product_links[-sponsored_overallpick_remove_ind][1:10]
+image_urls = image_urls[-sponsored_overallpick_remove_ind][1:10]
 
 
 # ---- grab product names ----
@@ -65,7 +51,7 @@ product_price = lapply(listings, function(x) {
 })
 
 product_price = unlist(product_price)
-product_price = paste0('$',product_price)
+# product_price = paste0('$',product_price)
 
 product_price
 
@@ -91,11 +77,24 @@ product_rating
 
 product_df = data.frame(
   "product" = product_names,
-  "price" = product_price,
+  "price" = as.numeric(product_price),
   "rating" = product_rating,
-  'image' = image_urls,
-  'product_url' = final_url
-)
+  'image' = image_urls
+  )
+
+cheap_ind = which(product_df$price == min(product_df$price))[1]
+
+# Construct the full tracking URL by adding the base URL
+base_url <- "https://www.amazon.com"
+full_tracking_url <- paste0(base_url, product_links[cheap_ind])
+
+# Follow the redirection to get the final URL
+response <- GET(full_tracking_url)
+
+# Extract the final URL
+final_url <- response$url
+
+
 
 
 
